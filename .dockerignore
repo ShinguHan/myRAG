@@ -1,0 +1,19 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# VS Code
+.vscode/
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# RAG Data
+db/
+data/

@@ -14,7 +14,8 @@ def main():
     # 데이터를 DB에 저장할 때 사용했던 것과 '반드시' 동일한 모델을 사용해야 합니다.
     embedding_function = SentenceTransformerEmbeddings(
         model_name=EMBEDDING_MODEL_NAME,
-        model_kwargs={'device': 'cpu'}
+        # model_kwargs={'device': 'cpu'}
+        model_kwargs={'device': 'cuda'}
     )
 
     # 2. 디스크에 저장된 벡터 DB를 로드합니다.
