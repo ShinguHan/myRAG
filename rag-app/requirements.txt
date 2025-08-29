@@ -1,0 +1,15 @@
+langchain
+langchain-community
+sentence-transformers
+chromadb
+pypdf
+python-docx
+unstructured
+unstructured[java]
+tiktoken
+unstructured[pptx]
+unstructured[xlsx]
+unstructured[md]
+fastapi
+uvicorn
+pydantic<2

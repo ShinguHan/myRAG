@@ -1,0 +1,59 @@
+services:
+  ui:
+    build:
+      context: .
+      dockerfile: ./ui/Dockerfile
+    container_name: streamlit_ui_service
+    ports:
+      - "8501:8501"
+    depends_on:
+      - rag-app
+    networks:
+      - rag_network
+
+  rag-app:
+    build:
+      context: .
+      dockerfile: ./rag-app/Dockerfile
+    container_name: rag_api_service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./db:/code/db
+    depends_on:
+      - ollama
+    networks:
+      - rag_network
+    # GPU 사용을 위한 deploy 설정 추가
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama_service
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - rag_network
+    # GPU 사용을 위한 deploy 설정 추가
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+networks:
+  rag_network:
+    driver: bridge
+
+volumes:
+  ollama_data:

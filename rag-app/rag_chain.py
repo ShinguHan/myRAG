@@ -7,7 +7,7 @@ from langchain.chains import RetrievalQA
 # 설정값들을 상수로 정의하여 관리 용이성을 높입니다.
 DB_PATH = "./db"
 EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
-OLLAMA_MODEL_NAME = "llama3"
+OLLAMA_MODEL_NAME = "phi3"
 
 def get_rag_chain():
     """
@@ -17,7 +17,7 @@ def get_rag_chain():
     # 1. 임베딩 함수 로드
     embedding_function = SentenceTransformerEmbeddings(
         model_name=EMBEDDING_MODEL_NAME,
-        model_kwargs={'device': 'cpu'} # CPU 모드로 되돌립니다.
+        model_kwargs={'device': 'cuda'} # CPU 모드로 되돌립니다.
     )
 
     # 2. 벡터 DB 로드
@@ -47,10 +47,13 @@ def get_rag_chain():
 
     # 5. Ollama LLM 설정
 # 컨테이너가 Host PC의 Ollama에 접속할 수 있도록 base_url을 지정합니다.
+        # 5. Ollama LLM 설정
+    # Docker Compose 네트워크 안에서는 서비스 이름('ollama')으로 통신합니다.
     llm = Ollama(
-    base_url="http://host.docker.internal:11434",
-    model=OLLAMA_MODEL_NAME, 
-    temperature=0)
+        base_url="http://ollama:11434",
+        model=OLLAMA_MODEL_NAME, 
+        temperature=0
+    )
 
     # 6. RetrievalQA 체인 생성
     qa_chain = RetrievalQA.from_chain_type(

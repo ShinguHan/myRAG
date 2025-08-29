@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from contextlib import asynccontextmanager
-from app.rag_chain import get_rag_chain # rag_chain.py에서 함수를 가져옵니다.
+from rag_chain import get_rag_chain # rag_chain.py에서 함수를 가져옵니다.
 
 # AI 체인을 저장할 전역 변수를 선언합니다.
 rag_chain = None
